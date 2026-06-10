@@ -7,7 +7,7 @@ on:
 
 jobs:
   ios:
-    runs-on: macos-14
+    runs-on: macos-15
     env:
       APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
       APP_STORE_CONNECT_KEY_IDENTIFIER: ${{ secrets.APP_STORE_CONNECT_KEY_IDENTIFIER }}
@@ -17,6 +17,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Select latest Xcode (Apple requires iOS 26 SDK)
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Show Xcode version
+        run: |
+          xcodebuild -version
+          ls -d /Applications/Xcode*.app
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
