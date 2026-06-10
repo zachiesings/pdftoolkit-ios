@@ -53,6 +53,13 @@ jobs:
       - name: Apply provisioning profiles to Xcode project
         run: xcode-project use-profiles
 
+      - name: Install profiles where xcodebuild looks for them
+        run: |
+          mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+          cp "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles/"*.mobileprovision \
+             "$HOME/Library/MobileDevice/Provisioning Profiles/" 2>/dev/null || true
+          ls -la "$HOME/Library/MobileDevice/Provisioning Profiles/" || true
+
       - name: Build signed IPA
         run: |
           flutter build ipa --release \
