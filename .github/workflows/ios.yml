@@ -24,6 +24,9 @@ jobs:
           channel: stable
           cache: true
 
+      - name: Disable Swift Package Manager (avoid google_mobile_ads/webview CocoaPods↔SPM conflict)
+        run: flutter config --no-enable-swift-package-manager
+
       - name: Install Codemagic CLI Tools
         run: |
           python3 -m pip install --break-system-packages codemagic-cli-tools 2>/dev/null \
