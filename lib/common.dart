@@ -152,83 +152,83 @@ class ResultScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Selesai')),
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-            const SizedBox(height: 8),
-            Container(
-              padding: const EdgeInsets.all(18),
-              decoration: cardDeco(border: C.ok.withValues(alpha: 0.4)),
-              child: Row(children: [
-                Container(
-                  width: 46,
-                  height: 46,
-                  decoration: const BoxDecoration(color: C.ok, shape: BoxShape.circle),
-                  child: const Icon(Icons.check, color: Colors.white),
-                ),
-                const SizedBox(width: 14),
-                Expanded(
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Text(title, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16)),
-                    const SizedBox(height: 2),
-                    Text(subtitle, style: const TextStyle(color: C.muted, fontSize: 13)),
-                  ]),
-                ),
-              ]),
-            ),
-            const SizedBox(height: 16),
-            Text('${paths.length} file', style: const TextStyle(color: C.muted, fontWeight: FontWeight.w700, fontSize: 12)),
-            const SizedBox(height: 8),
-            Expanded(
-              child: ListView.separated(
-                itemCount: paths.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 8),
-                itemBuilder: (_, i) {
-                  final name = paths[i].split('/').last;
-                  return InkWell(
-                    borderRadius: BorderRadius.circular(12),
-                    onTap: () => openFile(paths[i]),
-                    child: Container(
-                      decoration: cardDeco(),
-                      padding: const EdgeInsets.all(14),
-                      child: Row(children: [
-                        const Icon(Icons.insert_drive_file_outlined, color: C.primary),
-                        const SizedBox(width: 12),
-                        Expanded(child: Text(name, maxLines: 1, overflow: TextOverflow.ellipsis)),
-                        const Icon(Icons.open_in_new, size: 18, color: C.muted),
-                      ]),
+      body: PremiumBackground(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 8, 20, 20),
+            child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: cardDeco(),
+                child: Row(children: [
+                  Container(
+                    width: 52,
+                    height: 52,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(colors: [Color(0xFF12A45A), Color(0xFF27C06B)]),
+                      shape: BoxShape.circle,
+                      boxShadow: [BoxShadow(color: Color(0x5512A45A), blurRadius: 16, offset: Offset(0, 8))],
                     ),
-                  );
-                },
+                    child: const Icon(Icons.check_rounded, color: Colors.white, size: 30),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      Text(title, style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 17)),
+                      const SizedBox(height: 3),
+                      Text(subtitle, style: const TextStyle(color: C.muted, fontSize: 13)),
+                    ]),
+                  ),
+                ]),
               ),
-            ),
-            Row(children: [
+              const SizedBox(height: 18),
+              Text('${paths.length} file', style: const TextStyle(color: C.muted, fontWeight: FontWeight.w700, fontSize: 12)),
+              const SizedBox(height: 10),
               Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: () => openFile(paths.first),
-                  icon: const Icon(Icons.visibility_outlined),
-                  label: const Text('Buka'),
-                  style: OutlinedButton.styleFrom(
-                      foregroundColor: C.primary,
-                      side: const BorderSide(color: C.primary),
-                      padding: const EdgeInsets.symmetric(vertical: 14)),
+                child: ListView.separated(
+                  itemCount: paths.length,
+                  separatorBuilder: (_, __) => const SizedBox(height: 10),
+                  itemBuilder: (_, i) {
+                    final name = paths[i].split('/').last;
+                    return InkWell(
+                      borderRadius: BorderRadius.circular(20),
+                      onTap: () => openFile(paths[i]),
+                      child: Container(
+                        decoration: cardDeco(),
+                        padding: const EdgeInsets.all(16),
+                        child: Row(children: [
+                          Container(
+                            width: 44,
+                            height: 44,
+                            decoration: BoxDecoration(
+                              color: C.primary.withValues(alpha: 0.12),
+                              borderRadius: BorderRadius.circular(14),
+                            ),
+                            child: const Icon(Icons.insert_drive_file_rounded, color: C.primary, size: 24),
+                          ),
+                          const SizedBox(width: 14),
+                          Expanded(child: Text(name, maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14))),
+                          const Icon(Icons.open_in_new_rounded, size: 18, color: C.muted),
+                        ]),
+                      ),
+                    );
+                  },
                 ),
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: ElevatedButton.icon(
-                  onPressed: () => shareFiles(paths),
-                  icon: const Icon(Icons.ios_share),
-                  label: const Text('Bagikan'),
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: C.primary,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 14)),
+              const SizedBox(height: 4),
+              Row(children: [
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: () => openFile(paths.first),
+                    icon: const Icon(Icons.visibility_outlined),
+                    label: const Text('Buka'),
+                  ),
                 ),
-              ),
+                const SizedBox(width: 12),
+                Expanded(child: GradientButton(icon: Icons.ios_share, label: 'Bagikan', onPressed: () => shareFiles(paths))),
+              ]),
             ]),
-          ]),
+          ),
         ),
       ),
     );
