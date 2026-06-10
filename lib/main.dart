@@ -4,6 +4,10 @@ import 'ads.dart';
 import 'common.dart';
 import 'tools/image_to_pdf.dart';
 import 'tools/pdf_to_image.dart';
+import 'tools/merge_pdf.dart';
+import 'tools/split_pdf.dart';
+import 'tools/compress_pdf.dart';
+import 'tools/compress_image.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,6 +45,14 @@ final List<Tool> kTools = [
       (_) => const ImageToPdfScreen()),
   Tool('PDF → Gambar', 'Setiap halaman jadi PNG', Icons.image_outlined, C.primary,
       (_) => const PdfToImageScreen()),
+  Tool('Gabung PDF', 'Beberapa PDF jadi satu', Icons.merge_type, C.ok,
+      (_) => const MergePdfScreen()),
+  Tool('Pisah PDF', 'Ekstrak / pecah halaman', Icons.call_split, C.gold,
+      (_) => const SplitPdfScreen()),
+  Tool('Kompres PDF', 'Perkecil ukuran file', Icons.compress, C.primary2,
+      (_) => const CompressPdfScreen()),
+  Tool('Kompres Foto', 'Perkecil ukuran gambar', Icons.photo_size_select_large, C.danger,
+      (_) => const CompressImageScreen()),
 ];
 
 class HomeScreen extends StatelessWidget {
