@@ -1,0 +1,40 @@
+name: pdftoolkit
+description: "Toolkit PDF & Foto — konversi & olah PDF/gambar, 100% di perangkat."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Pilih file & gambar
+  file_picker: ^8.1.2
+  image_picker: ^1.1.2
+
+  # Olah PDF (pure-Dart): load, gabung, pisah, buat
+  syncfusion_flutter_pdf: ^27.1.48
+  pdf: ^3.11.1
+  printing: ^5.13.4        # rasterize PDF -> gambar (native iOS/Android)
+
+  # Olah gambar (kompres/resize/encode)
+  image: ^4.3.0
+
+  # Simpan, buka, bagikan hasil
+  path_provider: ^2.1.4
+  open_filex: ^4.5.0
+  share_plus: ^10.0.2
+
+  # Iklan & penyimpanan ringan
+  google_mobile_ads: ^5.2.0
+  shared_preferences: ^2.3.2
+
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
