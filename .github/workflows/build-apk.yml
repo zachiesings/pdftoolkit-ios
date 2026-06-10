@@ -31,6 +31,9 @@ jobs:
       - name: Ambil dependencies
         run: flutter pub get
 
+      - name: Generate ikon app (launcher icons)
+        run: dart run flutter_launcher_icons
+
       - name: Build APK (release)
         run: flutter build apk --release
 
