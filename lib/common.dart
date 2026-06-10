@@ -6,6 +6,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'theme.dart';
 import 'ads.dart';
+import 'limits.dart';
 
 /// Folder output di area privat aplikasi (tidak butuh izin storage).
 Future<Directory> outputDir() async {
@@ -40,7 +41,14 @@ void snack(BuildContext context, String msg, {bool error = false}) {
 
 /// Jalankan tugas berat sambil menampilkan overlay loading. Mengembalikan hasil
 /// (atau null bila gagal — pesan error otomatis ditampilkan).
+///
+/// Sebelum menjalankan tugas, kuota harian diperiksa lewat [ensureCanConvert]:
+/// bila kuota gratis habis pengguna ditawari menonton iklan berhadiah. Bila
+/// pengguna menolak / belum membuka akses, fungsi mengembalikan null tanpa
+/// menjalankan tugas. Sesudah tugas sukses, 1 kuota dipakai ([Quota.consume]).
 Future<T?> runBusy<T>(BuildContext context, String label, Future<T> Function() task) async {
+  if (!await ensureCanConvert(context)) return null;
+  if (!context.mounted) return null;
   showDialog(
     context: context,
     barrierDismissible: false,
@@ -48,6 +56,7 @@ Future<T?> runBusy<T>(BuildContext context, String label, Future<T> Function() t
   );
   try {
     final res = await task();
+    await Quota.consume();
     if (context.mounted) Navigator.of(context, rootNavigator: true).pop();
     return res;
   } catch (e) {
@@ -78,6 +87,58 @@ class _BusyDialog extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Putar iklan berhadiah → bila ditonton sampai selesai, buka akses tanpa batas
+/// untuk sisa hari ini. Mengembalikan true bila berhasil dibuka.
+Future<bool> unlockUnlimitedWithAd(BuildContext context) async {
+  if (!Ads.rewardedReady) {
+    snack(context, 'Iklan belum siap, coba lagi beberapa detik.', error: true);
+    return false;
+  }
+  final earned = await Ads.showRewarded();
+  if (earned) {
+    await Quota.unlockToday();
+    if (context.mounted) snack(context, 'Akses tanpa batas terbuka sampai besok 🎉');
+    return true;
+  }
+  if (context.mounted) {
+    snack(context, 'Iklan belum selesai ditonton. Akses belum terbuka.', error: true);
+  }
+  return false;
+}
+
+/// Pastikan pengguna boleh melakukan konversi. Bila kuota gratis habis,
+/// tawarkan menonton iklan berhadiah untuk membuka akses tanpa batas hari ini.
+/// Mengembalikan true bila boleh lanjut.
+Future<bool> ensureCanConvert(BuildContext context) async {
+  if (await Quota.canConvert()) return true;
+  if (!context.mounted) return false;
+  final watch = await showDialog<bool>(
+    context: context,
+    builder: (ctx) => AlertDialog(
+      title: const Text('Kuota gratis hari ini habis'),
+      content: const Text(
+        'Kamu sudah memakai jatah konversi gratis hari ini.\n\n'
+        'Tonton 1 video singkat untuk membuka akses TANPA BATAS sampai besok.',
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(ctx, false),
+          child: const Text('Nanti'),
+        ),
+        ElevatedButton.icon(
+          onPressed: () => Navigator.pop(ctx, true),
+          icon: const Icon(Icons.play_circle_fill, size: 20),
+          label: const Text('Tonton iklan'),
+          style: ElevatedButton.styleFrom(
+              backgroundColor: C.primary, foregroundColor: Colors.white),
+        ),
+      ],
+    ),
+  );
+  if (watch != true || !context.mounted) return false;
+  return unlockUnlimitedWithAd(context);
 }
 
 /// Layar hasil standar: ringkasan + tombol Buka / Bagikan.

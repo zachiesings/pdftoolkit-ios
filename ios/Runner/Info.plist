@@ -77,9 +77,9 @@
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Izinkan menyimpan hasil konversi (gambar/PDF) ke galeri Anda.</string>
 
-	<!-- AdMob (TEST id — ganti dgn ID asli sebelum rilis) -->
+	<!-- AdMob (ASLI — akun AdMob boss) -->
 	<key>GADApplicationIdentifier</key>
-	<string>ca-app-pub-3940256099942544~1458002511</string>
+	<string>ca-app-pub-1298950542115439~4969988749</string>
 	<key>NSUserTrackingUsageDescription</key>
 	<string>Izin ini dipakai untuk menampilkan iklan yang lebih relevan. Semua fitur tetap bisa dipakai tanpa mengizinkannya.</string>
 	<key>SKAdNetworkItems</key>
