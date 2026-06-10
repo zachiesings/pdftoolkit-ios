@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import '../theme.dart';
 import '../common.dart';
+import '../pdf_ops.dart';
 
 /// Gabungkan beberapa file PDF menjadi satu (sesuai urutan daftar).
 class MergePdfScreen extends StatefulWidget {
@@ -36,7 +37,7 @@ class _MergePdfScreenState extends State<MergePdfScreen> {
       for (final f in _files) {
         final bytes = await File(f.path!).readAsBytes();
         final src = PdfDocument(inputBytes: bytes);
-        out.importPageRange(src, 0, src.pages.count - 1);
+        copyPages(src, out, 0, src.pages.count - 1);
         src.dispose();
       }
       final data = await out.save();

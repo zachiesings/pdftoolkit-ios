@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import '../theme.dart';
 import '../common.dart';
+import '../pdf_ops.dart';
 
 /// Pisah PDF: ekstrak rentang halaman, atau pecah jadi per-halaman.
 class SplitPdfScreen extends StatefulWidget {
@@ -45,7 +46,7 @@ class _SplitPdfScreenState extends State<SplitPdfScreen> {
       final bytes = await File(path).readAsBytes();
       final src = PdfDocument(inputBytes: bytes);
       final out = PdfDocument();
-      out.importPageRange(src, start - 1, end - 1);
+      copyPages(src, out, start - 1, end - 1);
       final data = await out.save();
       src.dispose();
       out.dispose();
@@ -68,7 +69,7 @@ class _SplitPdfScreenState extends State<SplitPdfScreen> {
       final out = <String>[];
       for (var i = 0; i < n; i++) {
         final one = PdfDocument();
-        one.importPageRange(src, i, i);
+        copyPages(src, one, i, i);
         final data = await one.save();
         one.dispose();
         final f = await saveBytes('${_baseName()}_hal${(i + 1).toString().padLeft(2, '0')}_$ts.pdf', data);
