@@ -73,15 +73,15 @@
 
 	<!-- Izin memilih/menyimpan gambar untuk dikonversi -->
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Izinkan akses galeri untuk memilih gambar yang akan dikonversi ke PDF.</string>
+	<string>Allow access to your photo library to choose images to convert to PDF.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Izinkan menyimpan hasil konversi (gambar/PDF) ke galeri Anda.</string>
+	<string>Allow saving converted images and PDFs to your photo library.</string>
 
 	<!-- AdMob (ASLI — akun AdMob boss) -->
 	<key>GADApplicationIdentifier</key>
 	<string>ca-app-pub-1298950542115439~4969988749</string>
 	<key>NSUserTrackingUsageDescription</key>
-	<string>Izin ini dipakai untuk menampilkan iklan yang lebih relevan. Semua fitur tetap bisa dipakai tanpa mengizinkannya.</string>
+	<string>This lets us show more relevant ads. All features work even if you do not allow it.</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>
