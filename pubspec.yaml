@@ -1,7 +1,7 @@
 name: pdftoolkit
 description: "Toolkit PDF & Foto — konversi & olah PDF/gambar, 100% di perangkat."
 publish_to: 'none'
-version: 1.0.0+4
+version: 1.0.0+5
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -29,6 +29,7 @@ dependencies:
 
   # Iklan & penyimpanan ringan
   google_mobile_ads: ^5.2.0
+  app_tracking_transparency: ^2.0.6
   shared_preferences: ^2.3.2
 
   cupertino_icons: ^1.0.8

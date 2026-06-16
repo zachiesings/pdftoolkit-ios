@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 
 /// Helper iklan AdMob.
 ///
@@ -67,6 +68,23 @@ class Ads {
     _ready = true;
     _loadInterstitial();
     _loadRewarded();
+  }
+
+  /// iOS App Tracking Transparency: show the system prompt once (on first launch)
+  /// before personalized ads are used. REQUIRED by App Store Guideline 2.1 — the
+  /// app links the AppTrackingTransparency framework via AdMob, so the prompt must
+  /// actually appear. Call this once the UI is on screen (a post-frame callback),
+  /// otherwise iOS silently skips the prompt because there is no active window yet.
+  /// No-op on Android / if the plugin is unavailable.
+  static Future<void> requestTracking() async {
+    try {
+      final status = await AppTrackingTransparency.trackingAuthorizationStatus;
+      if (status == TrackingStatus.notDetermined) {
+        await AppTrackingTransparency.requestTrackingAuthorization();
+      }
+    } catch (_) {
+      // Non-iOS platform or plugin error — continue without tracking.
+    }
   }
 
   // --- Interstitial: dipreload lalu ditampilkan saat momen natural (sesudah hasil) ---

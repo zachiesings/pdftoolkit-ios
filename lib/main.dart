@@ -66,6 +66,17 @@ class _HomeScreenState extends State<HomeScreen> {
   void _refreshQuota() => setState(() => _quotaTick++);
 
   @override
+  void initState() {
+    super.initState();
+    // Show the iOS App Tracking Transparency prompt once the first frame is on
+    // screen (Apple Guideline 2.1 — the prompt must appear before tracking).
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Future.delayed(const Duration(milliseconds: 400));
+      await Ads.requestTracking();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: const BannerAdBox(),
